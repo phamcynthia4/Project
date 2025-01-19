@@ -1,3 +1,13 @@
+import pyttsx3
+
+# Initialize the Text-to-Speech engine
+engine = pyttsx3.init()
+
+# Set properties like voice and speech rate (optional)
+engine.setProperty('rate', 150)  # Speed of speech
+engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
+
+
 # from groq import Groq
 # import base64
 
@@ -8,7 +18,7 @@
 #     return base64.b64encode(image_file.read()).decode('utf-8')
 
 # # Path to your image
-# image_path = "C:/Users/phamc/Downloads/Photos-001/DSC_1020_2.JPG"
+# image_path = "C:/Users/phamc/Downloads/a2e7c170-79ba-11ef-8547-c93707d8f8aa.png"
 
 # # Getting the base64 string
 # base64_image = encode_image(image_path)
@@ -22,7 +32,7 @@
 #         {
 #             "role": "user",
 #             "content": [
-#                 {"type": "text", "text": "What's in this image?"},
+#                 {"type": "text", "text": "Provide advice to the image as if a 911 responder and suggest 911 only if urgent and very severe"},
 #                 {
 #                     "type": "image_url",
 #                     "image_url": {
@@ -51,20 +61,19 @@ completion = client.chat.completions.create(
             "content": [
                 {
                     "type": "text",
-                    "text": "Provide advice to the image as if a 911 responder and suggest 911 only if urgent and very severe"
+                    "text": "Every image is an image of a problem. Provide advice to the image as if a 911 responder and suggest 911 only if urgent and very severe. If the problem is severe and requires 911, put the numbers 911 as the first thing in the output. Then suggest next step the individual must take in this situation."
                 },
                 {
                     "type": "image_url",
                     "image_url": {
-                        "url": "https://i.redd.it/ny8y66ev27sc1.jpeg"
+                        "url": "https://www.twopedsinapod.org/wp-content/uploads/2016/03/splinter.png"
                     }
                 }
             ]
         },
          {
             "role": "user",
-            "content": "Tell me more about the solution"
-        }
+            "content": "Tell me more about the solution"        }
     ],
     temperature=1,
     max_completion_tokens=1024,
@@ -74,4 +83,9 @@ completion = client.chat.completions.create(
 )
 
 print(completion.choices[0].message)
+# Convert text to speech
+def text_speech():
+    text = completion.choices[0].message
+    engine.say(text)
+    engine.runAndWait() #wait for speech to run
 
